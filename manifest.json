@@ -1,0 +1,37 @@
+{
+  "manifest_version": 2,
+  "name": "NordicMafia Helper",
+  "description": "Description is incomming",
+  "homepage_url": "https://github.com/StefanBols/NordicMafia.Helper",
+  "version": "1",
+  "browser_action": {
+    "default_title": "NM Helper"
+  },
+
+  "background": {
+    "scripts": [
+      "scripts/load.js"
+    ],
+    "persistent": true
+  },
+
+  "permissions": [
+    "notifications"
+  ],
+  
+  "background": {
+    "scripts": ["scripts/background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.nordicmafia.org/*"
+      ],
+      "js": ["scripts/helper.js"]
+    }
+  ],
+
+  "icons": {
+    "100": "graphics/icons/icon.png"
+  }
+}
