@@ -35,36 +35,21 @@ if (!foundKrimCounter) {
 }
 
 $('#krimSubmitButton').click(function() {
-    sendNotification(
-    'krim', 
-    'Kriminalitet',
-    'Kriminalitet nu muligt igen',
-    180);
+    planNotification('krim');
 });
 $('#gtaSubmitButton').click(function() {
-    sendNotification(
-    'gta', 
-    'Biltyveri',
-    'Biltyveri nu muligt igen',
-    360);
+    planNotification('gta');
 })
 $('input[name=submitBlackmail]').click(function() {
-    sendNotification(
-    'blackmail', 
-    'Utpresning',
-    'Utpresning nu muligt igen',
-    960);
+    planNotification('blackmail');
 })
 
-var sendNotification = function (type, title, message, timeOffset) {
-    console.log('ContentScript sending notification for', type)
+var planNotification = function (type) {
+    console.log('ContentScript plan notification for', type)
     chrome.runtime.sendMessage({
-        action: 'sendNotification',
+        action: 'planNotification',
         payload: {
-            type: type,
-            title: title,
-            message: message,
-            timeOffset: timeOffset
+            type: type
         }
     }, function(response) {
         console.log("Response: ", response);
