@@ -56,14 +56,42 @@ $(function() {
         });
     }
 
-    
-    if ($('input[name=bounty]').length > 0) {
-        var jailCountdown = checkJailCountdown();
+    if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
+        var rows = $('#mainContent table tr[id]');
+        var users = [];
+        for(var i = 0; i < rows.length; i++) {
+            var row = $(rows[i]);
+            var columns = row.find('td');
+            if (columns[3].innerText === 'Bryt ut') {
+                var id = row.attr('id').replace(/\D/g,'');
+                var name = columns[0].innerText;
+                var reward = parseInt(columns[2].innerText.replace(/\D/g,''));
+                users.push({id: id, reward: reward, name: name});
+            }
+        }
 
+        // Sort users by biggest reward
+        users.sort(function(a, b){
+            return b.reward - a.reward;
+        });
+        var user = users[0];// 
+        var buttonContainer = $('<div>').css('text-align', 'right');
+        var utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text('Ut bryt ' + user.name + ' (' + user.reward + ' kr.)');
+        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Opdater').prepend($('<i>').addClass('fa fa-refresh'));
+        buttonContainer.append(utBrytBtn);
+        buttonContainer.append(refreshBtn);
+        $('#mainContent table').parent().before(buttonContainer);
+    }
+
+    if ($('input[name=bounty]').length > 0) { // We are in jail
+        // planNotification for release
+        var jailCountdown = checkJailCountdown();
         if (jailCountdown) {
             planNotification('jail', jailCountdown);
         }
     }
+
+    
 });
 
 var planNotification = function (type, timeOffset) {
