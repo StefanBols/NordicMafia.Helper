@@ -74,7 +74,12 @@ var sendNotification = function(type, title, message) {
         iconUrl: 'graphics/icons/notification-icon.png',
         title: title,
         message: message
-     }, function(notificationId) {});
+     }, (notificationId) => {
+         // Clear notification after 30 seconds.
+         setTimeout((notificationId) => {
+            chrome.notification.clear(notificationId, () => {})
+         }, 30000);
+     });
 }
 
 
@@ -85,5 +90,14 @@ chrome.alarms.getAll(function(alarms) {
 		var alarm = alarms[i];
 		console.log(alarm.name, (alarm.scheduledTime-Date.now())/1000)
 	}
+});
+*/
+/* Debugging script for clearing all notifcations
+chrome.notifications.getAll((items) => {
+  if ( items ) {
+      for (let key in items) {
+          chrome.notifications.clear(key);
+      }
+  }
 });
 */
