@@ -28,30 +28,70 @@
 
 */
 
-var foundKrimCounter = !!document.getElementById('premCounter_kriminalitet');
+$(function() {
+    var currentPage = window.location.href;
 
-if (!foundKrimCounter) {
-    console.log('Error');
-}
+    if (currentPage.includes('p=kriminalitet')) {
+        $('#krimSubmitButton').click(function() {
+            planNotification('krim');
+        });
+    }
 
-$('#krimSubmitButton').click(function() {
-    planNotification('krim');
+    if (currentPage.includes('p=gta')) {
+        $('#gtaSubmitButton').click(function() {
+            planNotification('gta');
+        });
+            
+        if ($('.errorbox').text().includes('Du kom i fengsel')) {
+            // Du har lavet GTA og kom i fengsel. Redirect to Jail page
+            setTimeout(function() {
+                window.location.href='index.php?p=jail'
+            }, 2500);
+        }
+    }
+
+    if (currentPage.includes('p=blackmail')) {
+        $('input[name=submitBlackmail]').click(function() {
+            planNotification('blackmail');
+        });
+    }
+
+    
+    if ($('input[name=bounty]').length > 0) {
+        var jailCountdown = checkJailCountdown();
+
+        if (jailCountdown) {
+            planNotification('jail', jailCountdown);
+        }
+    }
 });
-$('#gtaSubmitButton').click(function() {
-    planNotification('gta');
-})
-$('input[name=submitBlackmail]').click(function() {
-    planNotification('blackmail');
-})
 
-var planNotification = function (type) {
+var planNotification = function (type, timeOffset) {
     console.log('ContentScript plan notification for', type)
     chrome.runtime.sendMessage({
         action: 'planNotification',
         payload: {
-            type: type
+            type: type,
+            timeOffset: timeOffset
         }
     }, function(response) {
         console.log("Response: ", response);
     });
+}
+
+var checkJailCountdown = function() {
+    var jailCountdown;
+    // TODO: Get this crap to work!
+    // try {
+    //     var regex = /'countDown\(([0-9]+), \'jail\'\)'/g;
+    //     jailCountdown = regex.exec(document.getElementsByTagName('BODY')[0].innerHTML)[1];
+    // } catch(e) {}
+
+    // Ghetto hack
+    var source = $('#mainContent script').first().text();
+    if (source.includes('countDown(') && source.includes('\'jail\'')) {
+        jailCountdown = source.replace(/\D/g,'');
+    }
+
+    return jailCountdown;
 }
