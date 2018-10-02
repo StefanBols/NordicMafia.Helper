@@ -32,8 +32,8 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
             message = 'Det er nu muligt at prøve utpresning igen';
             break;
         case 'jail':
-            title: 'Fengsel';
-            message: 'Du er nu ude af fengslet';
+            title = 'Fengsel';
+            message = 'Du er nu ude af fengslet';
             break;
     }
 
@@ -71,7 +71,7 @@ var sendNotification = function(type, title, message) {
     console.log('Sending notification for ', type)
     chrome.notifications.create(null, {
         type: 'basic',
-        iconUrl: 'graphics/icons/icon.png',
+        iconUrl: 'graphics/icons/notification-icon.png',
         title: title,
         message: message
      }, function(notificationId) {});
