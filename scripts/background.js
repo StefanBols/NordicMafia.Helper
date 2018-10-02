@@ -1,13 +1,27 @@
-chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
     // var notification = new Notification('Notification title', {
     //     icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
     //     body: "Hey there! You've been notified!",
     //   });
     console.log('BackgroundScript recieved message: ', msg);
-    sendResponse('Recieved a message from ContentScript');
 
-    if (msg.action && msg.action === 'planNotification' && msg.payload) {
+    // If no action is set, don't go to actions methods
+    if (!msg.action) return;
+
+    // Action methods
+    if (msg.action === 'planNotification' && msg.payload) {
         planNotification(msg.payload.type, msg.payload.timeOffset);
+    }
+
+    if (msg.action === 'getAutoBountySettings' && callback) {
+        var settings = {
+            active: true,
+            fixedBounty: 50000,
+            topBountiesWith: 20000,
+            maxBounty: 150000,
+            roundBountiesUp: true // Up To Nearest 5k
+        }
+        callback(settings);
     }
 });
 
@@ -77,7 +91,7 @@ var sendNotification = function(type, title, message) {
      }, (notificationId) => {
          // Clear notification after 30 seconds.
          setTimeout((notificationId) => {
-            chrome.notification.clear(notificationId, () => {})
+            chrome.notification.clear(notificationId);
          }, 30000);
      });
 }
