@@ -12,17 +12,6 @@ chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
     if (msg.action === 'planNotification' && msg.payload) {
         planNotification(msg.payload.type, msg.payload.timeOffset);
     }
-
-    if (msg.action === 'getAutoBountySettings' && callback) {
-        var settings = {
-            active: true,
-            fixedBounty: 50000,
-            topBountiesWith: 20000,
-            maxBounty: 150000,
-            roundBountiesUp: true // Up To Nearest 5k
-        }
-        callback(settings);
-    }
 });
 
 chrome.alarms.onAlarm.addListener(function( alarm ) {
@@ -88,9 +77,9 @@ var sendNotification = function(type, title, message) {
         iconUrl: 'graphics/icons/notification-icon.png',
         title: title,
         message: message
-     }, (notificationId) => {
+     }, function (notificationId) {
          // Clear notification after 30 seconds.
-         setTimeout((notificationId) => {
+         setTimeout(function (notificationId) {
             chrome.notification.clear(notificationId);
          }, 30000);
      });

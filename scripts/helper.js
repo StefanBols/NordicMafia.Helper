@@ -60,42 +60,48 @@ $(function() {
     if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
         // Player with highest bounty
         var user = getUserWithHighestBounty();
-        var buttonContainer = $('<div>').css('text-align', 'right');
+        
+        var buttonContainer = $('<div>');
         var utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text('Ut bryt ' + user.name + ' (' + user.bounty + ' kr.)');
         var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Opdater').prepend($('<i>').addClass('fa fa-refresh'));
         buttonContainer.append(utBrytBtn);
         buttonContainer.append(refreshBtn);
 
-        // Auto Bounty settings
-        var autoBountyActiveCheckbox = $('<input>').attr('type', 'checkbox').click(function() {
-            containerX.toggle(this.checked);
+        chrome.storage.sync.get([
+            'autoBountyActive',
+            'autoBountyFixedBounty',
+            'autoBountyTopBountiesWith',
+            'autoBountyMaxBounty',
+            'autoBountyRoundBountiesUp'
+        ], (loadedSettings) => {
+            var settings = autoBountyMapping(loadedSettings);
+            console.log('Settings retrieved', settings);
+            var autoBountyStatus = !!settings.active; 
+            console.log('settings.active', settings.active);  
+            console.log('autoBountyStatus', autoBountyStatus);  
+
+            var autoBountyStatusText, autoBountyStatusColor;
+            if (autoBountyStatus) {
+                autoBountyStatusText = 'aktiv';
+                autoBountyStatusColor = 'green';
+            } else {
+                autoBountyStatusText = 'ikke aktiv';
+                autoBountyStatusColor = 'red';
+            }
+
+            var leftContainer = $('<div>');
+            var autoBountyStatusBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            leftContainer.append(autoBountyStatusBtn);
+
+            var wrapper = $('<div>');
+            wrapper.css({
+                'display': 'flex',
+                'justify-content': 'space-between'
+            });
+            wrapper.append(leftContainer);
+            wrapper.append(buttonContainer);
+            $('#mainContent table').parent().before(wrapper);
         });
-        var fixedBountyInput = $('<input>').attr('type', 'number');
-        var topBountiesWithInput = $('<input>').attr('type', 'number');
-        var MaxBountyInput = $('<input>').attr('type', 'number');
-
-        var container = $('<div>');
-        container.append(
-            $('<div>').append($('<label>Aktiver Auto Dusør</label>').prepend(autoBountyActiveCheckbox))
-        );
-        // TODO: Rename container X to inputContainer
-        var containerX = $('<div>');
-        containerX.append(
-            $('<div>Fixed bounty: </div>').append(fixedBountyInput)
-        );
-        containerX.append(
-            $('<div>Top highest bounty with: </div>').append(topBountiesWithInput)
-        );
-        containerX.append(
-            $('<div>Max bounty: </div>').append(MaxBountyInput)
-        );
-        container.append(containerX);
-
-        var wrapper = $('<div>');
-        wrapper.append(container);
-        wrapper.append(buttonContainer);
-        $('#mainContent table').parent().before(wrapper);
-
     }
 
     if ($('input[name=bounty]').length > 0) { // We are in jail
@@ -105,15 +111,20 @@ $(function() {
             planNotification('jail', jailCountdown);
         }
 
-        chrome.runtime.sendMessage({
-            action: 'getAutoBountySettings'
-        }, (settings) => {
-            console.log('settings',settings);
+        chrome.storage.sync.get([
+            'autoBountyActive',
+            'autoBountyFixedBounty',
+            'autoBountyTopBountiesWith',
+            'autoBountyMaxBounty',
+            'autoBountyRoundBountiesUp'
+        ], (loadedSettings) => {
+            var settings = autoBountyMapping(loadedSettings);
 
+            var moneyOnHand = parseInt($('#money_hand').text().replace(/\D/g,''));
+            if (moneyOnHand === 0) return;
             var bountyInput = $('input[name=bounty]');
             var bountySubmit = $('[name=doupdatebounty]');
             var bounty = 0;
-
             if (!settings.active || bountyInput.val() !== '0' || (!settings.fixedBounty && !settings.topBountiesWith)) return;
 
             if (settings.fixedBounty) {
@@ -124,6 +135,11 @@ $(function() {
                 bounty = highestBounty + settings.topBountiesWith;
                 if (settings.roundBountiesUp) bounty = Math.ceil(bounty/5000)*5000;
                 if (settings.maxBounty && bounty > settings.maxBounty) bounty = settings.maxBounty;
+            }
+
+            // If bounty is more then player has on the hand, set the bounty to what the player can afford
+            if (moneyOnHand < bounty) {
+                bounty = moneyOnHand;
             }
 
             bountyInput.val(bounty);
@@ -181,4 +197,14 @@ var getUserWithHighestBounty = () => {
             return b.bounty - a.bounty;
         });
         return users[0];
+}
+
+var autoBountyMapping = (settings) => {
+    return {
+        active: settings.autoBountyActive,
+        fixedBounty: parseInt(settings.autoBountyFixedBounty),
+        topBountiesWith: parseInt(settings.autoBountyTopBountiesWith),
+        maxBounty: parseInt(settings.autoBountyMaxBounty),
+        roundBountiesUp: settings.autoBountyRoundBountiesUp
+    };
 }
