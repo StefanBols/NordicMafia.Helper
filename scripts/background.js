@@ -16,9 +16,24 @@ chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
 
 chrome.alarms.onAlarm.addListener(function( alarm ) {
     console.log("Got an alarm!", alarm);
-    chrome.alarms.clear(alarm.name); // Remove this alarm, so it's free later
-
     var type = alarm.name;
+
+    if (alarm.name === 'jailchecker') {
+        $.get('https://nordicmafia.org/index.php?p=jail', (response) => {
+            console.log('jailcheck', response);
+            if (response.includes('Du er i fengsel!')) {
+                console.log('Player jailed');
+                return;
+            } else {
+                console.log('Player free, send jail free notification');
+                chrome.alarms.clear('jailchecker')
+                type = 'jail';
+            }
+        });
+    }
+
+    chrome.alarms.clear(type); // Remove this alarm, so it's free later
+
     var title, message;
     
     switch(type) {
@@ -61,6 +76,7 @@ var planNotification = function(type, timeOffset) {
             break;
         case 'jail':
             // timeOffset comes from parameter
+            planJailChecker();
             break;
     }
 
@@ -68,6 +84,18 @@ var planNotification = function(type, timeOffset) {
     chrome.alarms.create(type, {
         when: Date.now() + timeOffset*1000
     });
+}
+
+var planJailChecker = () => {
+    console.log('Planning jailchecker');
+    chrome.alarms.get('jailchecker', (alarm) => {
+        if (!alarm) {
+            chrome.alarms.create('jailchecker', {
+                periodInMinutes: .25
+            });
+        }
+    });
+
 }
 
 var sendNotification = function(type, title, message) {
@@ -80,7 +108,7 @@ var sendNotification = function(type, title, message) {
      }, function (notificationId) {
          // Clear notification after 30 seconds.
          setTimeout(function (notificationId) {
-            chrome.notification.clear(notificationId);
+            chrome.notifications.clear(notificationId);
          }, 30000);
      });
 }
