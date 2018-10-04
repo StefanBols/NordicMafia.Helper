@@ -1,5 +1,5 @@
 # NordicMafia Helper v1.1
-Get desktop notification in-game. -Test
+Get desktop notification in-game.
 
 This is a helper for the Nordic Mafia browser game.
 
