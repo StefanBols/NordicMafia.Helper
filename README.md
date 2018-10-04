@@ -15,7 +15,7 @@ Feel free to add issues, both bugs and features requests!
 ## Release notes
 ### v1.1
 - New feature: In jail a new button is there which shows the player who gives the highest reward for the jailbreak. Click on button start action to break player out.
-- New feature: AutoBounty (Auto dusør) in jail with posibilities to top other players with a givent amount and set a max bounty and round bounty to nearest 5.000
+- New feature: AutoBounty (Auto dusør) in jail with posibilities to top other players with a givent amount and set a max bounty and round bounty to nearest 5.000 - set these settings by the options page click the "Auto Dusør Aktiv/Ikke aktiv" button in jail
 - Bug fix: Tried to fix issue #11 where notifications repeats themselves - time will tell if it works.
 ### v1.0
 - Desktop notification: Crime (kriminalitet) is open

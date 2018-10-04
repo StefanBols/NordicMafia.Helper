@@ -90,7 +90,7 @@ $(function() {
             }
 
             var leftContainer = $('<div>');
-            var autoBountyStatusBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            var autoBountyStatusBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
             leftContainer.append(autoBountyStatusBtn);
 
             var wrapper = $('<div>');

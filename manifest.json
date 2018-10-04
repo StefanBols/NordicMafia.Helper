@@ -17,6 +17,7 @@
     "persistent": true
   },
   "options_page": "options/index.html",
+  "web_accessible_resources": ["options/index.html"],
 
   "permissions": [
     "notifications",
