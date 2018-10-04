@@ -8,6 +8,8 @@ $(function() {
     ], function(settings) {
         console.log('Settings retrieved from storage', settings);
         $('[data-nofixedbountygroup]').toggle(settings.autoBountyFixedBounty === '');
+        $('#autoBountyActive').prop('checked', settings.autoBountyActive);
+        $('#autoBountyRoundBountiesUp').prop('checked', settings.autoBountyRoundBountiesUp);
         updateSettings(settings);
     });
 });
