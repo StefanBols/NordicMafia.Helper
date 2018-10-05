@@ -18,6 +18,7 @@ Feel free to add issues, both bugs and features requests!
 - New feature: AutoBounty (Auto dusør) in jail with posibilities to top other players with a givent amount and set a max bounty and round bounty to nearest 5.000 - set these settings by the options page click the "Auto Dusør Aktiv/Ikke aktiv" button in jail
 - Bug fix: Tried to fix issue #11 where notifications repeats themselves - time will tell if it works.
 - Bug fix: Issue #21, Clearing notification giving undefined
+- Bug fix: Issue #20, If no player is in jail a nullpointer is thrown when using the player with the highest bounty.
 ### v1.0
 - Desktop notification: Crime (kriminalitet) is open
 - Desktop notification: GTA (biltyveri) is open
