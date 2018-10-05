@@ -89,8 +89,10 @@ $(function() {
             }
 
             var leftContainer = $('<div>');
-            var autoBountyStatusBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            var autoBountyStatusBtn = $('<button>').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            var autoBountyOptionsBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' Indstillinger').prepend($('<i>').addClass('fa fa-pencil'));
             leftContainer.append(autoBountyStatusBtn);
+            leftContainer.append(autoBountyOptionsBtn);
 
             var wrapper = $('<div>');
             wrapper.css({
