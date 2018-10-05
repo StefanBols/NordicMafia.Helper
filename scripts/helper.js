@@ -60,11 +60,13 @@ $(function() {
     if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
         // Player with highest bounty
         var user = getUserWithHighestBounty();
-        
+
         var buttonContainer = $('<div>');
-        var utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text('Ut bryt ' + user.name + ' (' + user.bounty + ' kr.)');
+        var utBrytBtn = null;
+        if (user) utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text('Ut bryt ' + user.name + ' (' + user.bounty + ' kr.)');
+        
         var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Opdater').prepend($('<i>').addClass('fa fa-refresh'));
-        buttonContainer.append(utBrytBtn);
+        if (utBrytBtn) buttonContainer.append(utBrytBtn);
         buttonContainer.append(refreshBtn);
 
         chrome.storage.sync.get([
@@ -75,10 +77,7 @@ $(function() {
             'autoBountyRoundBountiesUp'
         ], (loadedSettings) => {
             var settings = autoBountyMapping(loadedSettings);
-            console.log('Settings retrieved', settings);
             var autoBountyStatus = !!settings.active; 
-            console.log('settings.active', settings.active);  
-            console.log('autoBountyStatus', autoBountyStatus);  
 
             var autoBountyStatusText, autoBountyStatusColor;
             if (autoBountyStatus) {
