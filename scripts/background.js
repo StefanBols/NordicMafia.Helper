@@ -108,8 +108,8 @@ var sendNotification = function(type, title, message) {
      }, function (notificationId) {
          // Clear notification after 30 seconds.
          setTimeout(function (notificationId) {
-            chrome.notifications.clear(notificationId);
-         }, 30000);
+            if (notificationId) chrome.notifications.clear(notificationId);
+         }, 30000, notificationId);
      });
 }
 
