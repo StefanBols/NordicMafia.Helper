@@ -10,12 +10,6 @@
     "default_title": "NM Helper"
   },
 
-  "background": {
-    "scripts": [
-      "scripts/load.js"
-    ],
-    "persistent": true
-  },
   "options_page": "options/index.html",
   "web_accessible_resources": ["options/index.html"],
 
@@ -26,7 +20,11 @@
   ],
   
   "background": {
-    "scripts": ["scripts/background.js"]
+    "scripts": [
+      "scripts/background.js",
+      "lib/jquery-3.3.1.min.js",
+      "lib/underscore-1.9.1.min.js"
+    ]
   },
   "content_scripts": [
     {

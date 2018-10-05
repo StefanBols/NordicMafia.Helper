@@ -1,3 +1,5 @@
+var jailCheckers = ['jailchecker0', 'jailchecker1', 'jailchecker2', 'jailchecker3', 'jailchecker4', 'jailchecker5'];
+
 chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
     // var notification = new Notification('Notification title', {
     //     icon: 'http://cdn.sstatic.net/stackexchange/img/logos/so/so-icon.png',
@@ -18,18 +20,16 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
     console.log("Got an alarm!", alarm);
     var type = alarm.name;
 
-    if (alarm.name === 'jailchecker') {
+    if (jailCheckers.includes(alarm.name)) {
         $.get('https://nordicmafia.org/index.php?p=jail', (response) => {
-            console.log('jailcheck', response);
-            if (response.includes('Du er i fengsel!')) {
-                console.log('Player jailed');
-                return;
-            } else {
+            if (!response.includes('Du er i fengsel!')) {
                 console.log('Player free, send jail free notification');
-                chrome.alarms.clear('jailchecker')
-                type = 'jail';
+                clearJailCheckers();
+                chrome.alarms.clear('jail');
+                sendNotification('jailchecker', 'Fengsels utbrytning', 'Du er heldig! Du er blevet brut ut av fengslet!');
             }
         });
+        return;
     }
 
     chrome.alarms.clear(type); // Remove this alarm, so it's free later
@@ -61,6 +61,13 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
 
 var planNotification = function(type, timeOffset) {
     console.log('Planning notifiction for ', type);
+    if (!type) {
+        console.error('No type for planning notification!', {
+            type,
+            timeOffset
+        });
+        return;
+    }
     
     timeOffset = timeOffset || 0;
 
@@ -87,19 +94,29 @@ var planNotification = function(type, timeOffset) {
 }
 
 var planJailChecker = () => {
-    console.log('Planning jailchecker');
-    chrome.alarms.get('jailchecker', (alarm) => {
-        if (!alarm) {
-            chrome.alarms.create('jailchecker', {
-                periodInMinutes: .25
-            });
-        }
-    });
+    console.log('Start planning jailchecker');
 
+    // Start with clearing all checkers
+    clearJailCheckers();
+
+    var time = Date.now();
+    jailCheckers.forEach((jailChecker) => {
+        chrome.alarms.create(jailChecker, {
+            when: time,
+            periodInMinutes: 1
+        });
+        time += 60000 / jailCheckers.length;
+    });
+}
+var clearJailCheckers = () => {
+    console.log('Clear Jail Checkers');
+    jailCheckers.forEach((jailChecker) => {
+        chrome.alarms.clear(jailChecker);
+    });
 }
 
 var sendNotification = function(type, title, message) {
-    console.log('Sending notification for ', type)
+    console.log('Sending notification for ', type);
     chrome.notifications.create(null, {
         type: 'basic',
         iconUrl: 'graphics/icons/notification-icon.png',
