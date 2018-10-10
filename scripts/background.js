@@ -55,6 +55,8 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
             break;
     }
 
+    if (type === 'jail') clearJailCheckers();
+
     // Send notification!
     if (title && message) sendNotification(type, title, message);
 });
