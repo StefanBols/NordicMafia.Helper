@@ -21,12 +21,18 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
     var type = alarm.name;
 
     if (jailCheckers.includes(alarm.name)) {
+        console.log('Load', Date(), Date.now());
         $.get('https://nordicmafia.org/index.php?p=jail', (response) => {
+            console.log('Done', Date(), Date.now());
             if (!response.includes('Du er i fengsel!')) {
                 console.log('Player free, send jail free notification');
-                clearJailCheckers();
-                chrome.alarms.clear('jail');
-                sendNotification('jailchecker', 'Fengsels utbrytning', 'Du er heldig! Du er blevet brut ut av fengslet!');
+                // Check chail
+                chrome.alarms.get('jail', (alarm) => {
+                    clearJailCheckers();
+                    if (!alarm) return; // If there is no jail, no need for clearing jail or send notification
+                    chrome.alarms.clear('jail');
+                    sendNotification('jailchecker', 'Fengsels utbrytning', 'Du er heldig! Du er blevet brut ut av fengslet!');
+                });
             }
         });
         return;
