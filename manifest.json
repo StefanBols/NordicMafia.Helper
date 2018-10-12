@@ -31,7 +31,10 @@
       "matches": [
         "https://*.nordicmafia.org/*"
       ],
-      "js": ["lib/jquery-3.3.1.min.js", "scripts/helper.js"]
+      "js": [
+        "lib/jquery-3.3.1.min.js",
+        "lib/underscore-1.9.1.min.js",
+        "scripts/helper.js"]
     }
   ],
 

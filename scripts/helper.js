@@ -178,8 +178,20 @@ var checkJailCountdown = () => {
 
     return jailCountdown;
 }
-
+/*
+<tr id="jailrow_236786">
+    <td style="max-width: 120px; word-wrap:break-word; word-break: break-all;">
+        <a href="index.php?p=profile&amp;id=45">
+            <i class="fa fa-user"></i> <span style="color:#E3BB07">Khaleesi</span>
+        </a>
+    </td>
+    <td><i class="fa fa-clock-o"></i><span id="counter_jail_236786">1<span style="font-weight: bold;">m</span>, 35<span style="font-weight: bold;">s</span></span></td>
+    <td><i class="fa fa-money"></i> 0 kr</td>
+    <td style="text-align: center;"><a href="index.php?p=jail&amp;brytutspiller=236786">Bryt ut</a></td>
+</tr>
+*/
 var getUserWithHighestBounty = () => {
+
     var rows = $('#mainContent table tr[id]');
         var users = [];
         for(var i = 0; i < rows.length; i++) {
@@ -189,9 +201,16 @@ var getUserWithHighestBounty = () => {
                 var id = row.attr('id').replace(/\D/g,'');
                 var name = columns[0].innerText;
                 var bounty = parseInt(columns[2].innerText.replace(/\D/g,''));
-                users.push({id: id, bounty: bounty, name: name});
+                var gjengBro = columns[0].innerHTML.includes('#E3BB07');
+                users.push({id, bounty, name, gjengBro});
             }
         }
+
+        // Find Bros in jail
+        var jailedBros = _.where(users, { gjengBro: true });
+
+        // If any Bros jailed - fav. them and only them!
+        if (_.any(jailedBros)) users = jailedBros;
 
         // Sort users by biggest bounty
         users.sort(function(a, b){
