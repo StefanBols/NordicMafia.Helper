@@ -1,4 +1,4 @@
-# NordicMafia Helper v1.1
+# NordicMafia Helper v1.3
 Get desktop notification in-game.
 
 This is a helper for the Nordic Mafia browser game.
@@ -13,9 +13,10 @@ See issues to get a roadmap for the future ;-)
 
 Feel free to add issues, both bugs and features requests!
 ## Release notes
+### v1.3
+- Fixed bug with "Utbrytning"-notification comming when players jail time runs out.
 ### v1.2
-- Added more obvious settings button for AutoBounty (AutoDusør), issue #24
-- 
+- Added more obvious settings button for AutoBounty (AutoDusør), issue #24 
 ### v1.1
 - New feature: In jail a new button is there which shows the player who gives the highest reward for the jailbreak. Click on button start action to break player out.
 - New feature: AutoBounty (Auto dusør) in jail with posibilities to top other players with a givent amount and set a max bounty and round bounty to nearest 5.000 - set these settings by the options page click the "Auto Dusør Aktiv/Ikke aktiv" button in jail
