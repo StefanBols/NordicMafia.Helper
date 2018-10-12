@@ -17,11 +17,9 @@ chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
 });
 
 chrome.alarms.onAlarm.addListener(function( alarm ) {
-    console.log("Got an alarm!", alarm);
     var type = alarm.name;
 
     if (jailCheckers.includes(alarm.name)) {
-        console.log('Load', Date(), Date.now());
         $.get('https://nordicmafia.org/index.php?p=jail', (response) => {
             console.log('Done', Date(), Date.now());
             if (!response.includes('Du er i fengsel!')) {
