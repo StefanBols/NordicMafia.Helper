@@ -189,9 +189,16 @@ var getUserWithHighestBounty = () => {
                 var id = row.attr('id').replace(/\D/g,'');
                 var name = columns[0].innerText;
                 var bounty = parseInt(columns[2].innerText.replace(/\D/g,''));
-                users.push({id: id, bounty: bounty, name: name});
+                var gjengBro = columns[0].innerHTML.includes('#E3BB07');
+                users.push({id, bounty, name, gjengBro});
             }
         }
+
+        // Find Bros in jail
+        var jailedBros = _.where(users, { gjengBro: true });
+
+        // If any Bros jailed - fav. them and only them!
+        if (_.any(jailedBros)) users = jailedBros;
 
         // Sort users by biggest bounty
         users.sort(function(a, b){

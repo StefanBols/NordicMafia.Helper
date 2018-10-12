@@ -21,7 +21,6 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
 
     if (jailCheckers.includes(alarm.name)) {
         $.get('https://nordicmafia.org/index.php?p=jail', (response) => {
-            console.log('Done', Date(), Date.now());
             if (!response.includes('Du er i fengsel!')) {
                 console.log('Player free, send jail free notification');
                 // Check chail
