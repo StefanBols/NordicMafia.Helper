@@ -180,7 +180,6 @@ var checkJailCountdown = () => {
 }
 
 var getUserWithHighestBounty = () => {
-
     var rows = $('#mainContent table tr[id]');
         var users = [];
         for(var i = 0; i < rows.length; i++) {
