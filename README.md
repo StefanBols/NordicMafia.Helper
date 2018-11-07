@@ -18,6 +18,7 @@ Feel free to add issues, both bugs and features requests!
 - Fixed bug with "Utbrytning"-notification comming when players jail time runs out.
 - Localization added for all pages and features
 - Some all around grammar fixes
+- Bug fix: Tried to fix user reported error with Jail Checkers that are going crazy and spamming the user. Suspect that user uses old version of Chrome and theirfore migrated some code to lower version of javascript. (Issue #37)
 ### v1.2
 - Added more obvious settings button for AutoBounty (AutoDusør), issue #24 
 ### v1.1

@@ -105,13 +105,13 @@ var planJailChecker = () => {
     clearJailCheckers();
 
     var time = Date.now();
-    jailCheckers.forEach((jailChecker) => {
-        chrome.alarms.create(jailChecker, {
+    for (var i = 0; i < jailCheckers.length; i++) {
+        chrome.alarms.create(jailCheckers[i], {
             when: time,
             periodInMinutes: 1
         });
         time += 60000 / jailCheckers.length;
-    });
+    }
 }
 var clearJailCheckers = () => {
     console.log('Clear Jail Checkers');
