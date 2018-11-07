@@ -16,6 +16,7 @@ Feel free to add issues, both bugs and features requests!
 ### v1.3
 - New feature: In jail the bounty button that serves the player with highest reward now favorites fellow gjengmembers regardless of other players rewards.
 - Fixed bug with "Utbrytning"-notification comming when players jail time runs out.
+- Bug fix: Tried to fix user reported error with Jail Checkers that are going crazy and spamming the user. Suspect that user uses old version of Chrome and theirfore migrated some code to lower version of javascript. (Issue #37)
 ### v1.2
 - Added more obvious settings button for AutoBounty (AutoDusør), issue #24 
 ### v1.1
