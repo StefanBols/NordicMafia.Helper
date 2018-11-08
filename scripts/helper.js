@@ -92,7 +92,10 @@ $(function() {
             }
 
             var leftContainer = $('<div>');
-            var autoBountyStatusBtn = $('<div>').text(' ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            var autoBountyStatusBtn = $('<div>').css({
+                'margin-right': '1em',
+                'display': 'inline-block'
+            }).text(' ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
             var autoBountyOptionsBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' '+chrome.i18n.getMessage('nm_fengsel_autobounty_settings_button')).prepend($('<i>').addClass('fa fa-pencil'));
             leftContainer.append(autoBountyStatusBtn);
             leftContainer.append(autoBountyOptionsBtn);
