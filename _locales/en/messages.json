@@ -1,0 +1,78 @@
+{
+    "autobounty_Title": {
+        "message": "Auto Bounty",
+        "description": "Auto Bounty option page. Page Title"
+    },
+    "autobounty_ActiveCheckboxLabel": {
+        "message": "Active",
+        "description": "Auto Bounty option page. 'Active' label for checkbox"
+    },
+    "autobounty_TopBountyWithLabel": {
+        "message": "Amount to top highest bounty with",
+        "description": "Auto Bounty option page. 'Top bounty with' label"
+    },
+    "autobounty_MaxBountyLabel": {
+        "message": "Max bounty amount",
+        "description": "Auto Bounty option page. 'Max bounty' label"
+    },
+    "autobounty_RoundBountyToNearst5kLabel": {
+        "message": "Round bounty up to nearest 5k",
+        "description": "Auto Bounty option page. 'Round bounty' label checkbox"
+    },
+    "autobounty_FixedBountyLabel": {
+        "message": "Fixed bounty",
+        "description": "Auto Bounty option page. 'Fixed bounty' label"
+    },
+    "nm_fengsel_utbryt_button": {
+        "message": "Utbryt {player} ({bounty} kr.)",
+        "description": "Button for jailbreak inside Jail page on NM"
+    },
+    "nm_fengsel_update_button": {
+        "message": "Update",
+        "description": "Button for updating page inside Jail page on NM"
+    },
+    "nm_fengsel_autobounty_settings_button": {
+        "message": "Settings",
+        "description": "Button for opening the settings page for auto bounty, button placed inside Jail page on NM"
+    },
+    "nm_fengsel_autobountystatus_active": {
+        "message": "Auto Bounty is active",
+        "description": "Auto bounty active status, inside Jail page on NM"
+    },
+    "nm_fengsel_autobountystatus_inactive": {
+        "message": "Auto Bounty is not active",
+        "description": "Auto bounty not active status, inside Jail page on NM"
+    },
+    "notification_title_jail": {
+        "message": "Out of jail!",
+        "description": "Notification for jail - title"
+    },
+    "notification_message_jail": {
+        "message": "You're now out of jail!",
+        "description": "Notification for jail - message"
+    },
+    "notification_title_crime": {
+        "message": "Crime - Ready!",
+        "description": "Notification for crime - title"
+    },
+    "notification_message_crime": {
+        "message": "It's now possible to do crime again!",
+        "description": "Notification for crime - message"
+    },
+    "notification_title_gta": {
+        "message": "Gran theft auto - Ready!",
+        "description": "Notification for gta - title"
+    },
+    "notification_message_gta": {
+        "message": "It's now possible to do gran theft auto again!",
+        "description": "Notification for gta - message"
+    },
+    "notification_title_blackmail": {
+        "message": "Blackmail - Ready!",
+        "description": "Notification for blackmail - title"
+    },
+    "notification_message_blackmail": {
+        "message": "It's now possible to do blackmail again!",
+        "description": "Notification for blackmail - message"
+    }
+}
