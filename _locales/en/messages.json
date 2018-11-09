@@ -1,26 +1,26 @@
 {
     "autobounty_Title": {
-        "message": "Auto-Dusør",
+        "message": "Auto Bounty",
         "description": "Auto Bounty option page. Page Title"
     },
     "autobounty_ActiveCheckboxLabel": {
-        "message": "Aktiv",
+        "message": "Active",
         "description": "Auto Bounty option page. 'Active' label for checkbox"
     },
     "autobounty_TopBountyWithLabel": {
-        "message": "Ønsket beløp over høyeste dusør",
+        "message": "Amount to top highest bounty with",
         "description": "Auto Bounty option page. 'Top bounty with' label"
     },
     "autobounty_MaxBountyLabel": {
-        "message": "Maks dusør-beløp",
+        "message": "Max bounty amount",
         "description": "Auto Bounty option page. 'Max bounty' label"
     },
     "autobounty_RoundBountyToNearst5kLabel": {
-        "message": "Rund av dusør til nærmeste 5k",
+        "message": "Round bounty up to nearest 5k",
         "description": "Auto Bounty option page. 'Round bounty' label checkbox"
     },
     "autobounty_FixedBountyLabel": {
-        "message": "Fast dusør",
+        "message": "Fixed bounty",
         "description": "Auto Bounty option page. 'Fixed bounty' label"
     },
     "nm_fengsel_utbryt_button": {
@@ -28,51 +28,51 @@
         "description": "Button for jailbreak inside Jail page on NM"
     },
     "nm_fengsel_update_button": {
-        "message": "Oppdater",
+        "message": "Update",
         "description": "Button for updating page inside Jail page on NM"
     },
     "nm_fengsel_autobounty_settings_button": {
-        "message": "Innstillinger",
+        "message": "Settings",
         "description": "Button for opening the settings page for auto bounty, button placed inside Jail page on NM"
     },
     "nm_fengsel_autobountystatus_active": {
-        "message": "Auto-dusør er aktiv",
+        "message": "Auto Bounty is active",
         "description": "Auto bounty active status, inside Jail page on NM"
     },
     "nm_fengsel_autobountystatus_inactive": {
-        "message": "Auto-dusør er inaktiv",
+        "message": "Auto Bounty is not active",
         "description": "Auto bounty not active status, inside Jail page on NM"
     },
     "notification_title_jail": {
-        "message": "Ut av fengsel!",
+        "message": "Out of jail!",
         "description": "Notification for jail - title"
     },
     "notification_message_jail": {
-        "message": "Du er ute av fengsel!",
+        "message": "You're now out of jail!",
         "description": "Notification for jail - message"
     },
     "notification_title_crime": {
-        "message": "Kriminalitet - Klar!",
+        "message": "Crime - Ready!",
         "description": "Notification for crime - title"
     },
     "notification_message_crime": {
-        "message": "Du kan utføre kriminalitet igjen!",
+        "message": "It's now possible to do crime again!",
         "description": "Notification for crime - message"
     },
     "notification_title_gta": {
-        "message": "Biltyveri - Klar!",
+        "message": "Gran theft auto - Ready!",
         "description": "Notification for gta - title"
     },
     "notification_message_gta": {
-        "message": "Du kan utføre biltyveri igjen!",
+        "message": "It's now possible to do gran theft auto again!",
         "description": "Notification for gta - message"
     },
     "notification_title_blackmail": {
-        "message": "Utpressing - Klar",
+        "message": "Blackmail - Ready!",
         "description": "Notification for blackmail - title"
     },
     "notification_message_blackmail": {
-        "message": "Du kan utføre utpressing igjen!",
+        "message": "It's now possible to do blackmail again!",
         "description": "Notification for blackmail - message"
     }
 }
