@@ -1,4 +1,4 @@
-# NordicMafia Helper v1.3.2
+# NordicMafia Helper v1.4
 Get desktop notification in-game.
 
 This is a helper for the Nordic Mafia browser game.
@@ -13,6 +13,8 @@ See issues to get a roadmap for the future ;-)
 
 Feel free to add issues, both bugs and features requests!
 ## Release notes
+### v1.4
+-
 ### v1.3.2
 - Added helper to Blackjack Singleplayer (thanks to [AvE](https://www.nordicmafia.org/index.php?p=profile&id=1928))
 ### v1.3.1
