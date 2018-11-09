@@ -15,7 +15,9 @@ Feel free to add issues, both bugs and features requests!
 ## Release notes
 ### v1.4
 - Fixed bug in Blackjack Helper
+- Fixed an english translation which were norwegian
 - New notification for fightclub battles. It will notify the player after 30 sec. See issue #49 (submitted by [Casango](https://www.nordicmafia.org/index.php?p=profile&id=15))
+- New feature: The helper now auto refresh jail page when player is broken out of jail. See issue #25 
 ### v1.3.2
 - Added helper to Blackjack Singleplayer (thanks to [AvE](https://www.nordicmafia.org/index.php?p=profile&id=1928))
 ### v1.3.1
