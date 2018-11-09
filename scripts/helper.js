@@ -64,6 +64,13 @@ $(function() {
         document.head.appendChild(customBJ);
     }
 
+    if (currentPage.includes('p=fightclub')) {
+        var errBoxTxt = $('.errorBox').text();
+        if (errBoxTxt.includes('Du vant') || errBoxTxt.includes('Du tapte')) {
+            planNotification('fcfight');
+        }
+    }
+
     // If we are at the jail page and there is no bounty input (player not in jail)
     if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
         // Player with highest bounty

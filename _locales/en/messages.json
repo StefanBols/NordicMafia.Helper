@@ -74,5 +74,13 @@
     "notification_message_blackmail": {
         "message": "It's now possible to do blackmail again!",
         "description": "Notification for blackmail - message"
+    },
+    "notification_title_fcfight": {
+        "message": "FC Battle - Ready!",
+        "description": "Notification for fc fight - title"
+    },
+    "notification_message_fcfight": {
+        "message": "It's now possible to battle again!",
+        "description": "Notification for fc fight - message"
     }
 }

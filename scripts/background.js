@@ -56,6 +56,10 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
             title = chrome.i18n.getMessage('notification_title_jail');
             message = chrome.i18n.getMessage('notification_message_jail');
             break;
+        case 'fcfight':
+            title = chrome.i18n.getMessage('notification_title_fcfight');
+            message = chrome.i18n.getMessage('notification_message_fcfight');
+            break;
     }
 
     if (type === 'jail') clearJailCheckers();
@@ -90,9 +94,12 @@ var planNotification = function(type, timeOffset) {
             // timeOffset comes from parameter
             planJailChecker();
             break;
+        case 'fcfight':
+            timeOffset = 30;
+            break;
     }
 
-    chrome.alarms.clear(type); // If alarm already excists, remove it
+    chrome.alarms.clear(type);
     chrome.alarms.create(type, {
         when: Date.now() + timeOffset*1000
     });
