@@ -48,7 +48,7 @@
         "description": "Notification for jail - title"
     },
     "notification_message_jail": {
-        "message": "Du er nå ute av fengsel!",
+        "message": "Du er ute av fengsel!",
         "description": "Notification for jail - message"
     },
     "notification_title_crime": {
@@ -56,7 +56,7 @@
         "description": "Notification for crime - title"
     },
     "notification_message_crime": {
-        "message": "Du kan nå utføre kriminalitet!",
+        "message": "Du kan utføre kriminalitet igjen!",
         "description": "Notification for crime - message"
     },
     "notification_title_gta": {
@@ -64,7 +64,7 @@
         "description": "Notification for gta - title"
     },
     "notification_message_gta": {
-        "message": "Du kan nå utføre biltyveri!",
+        "message": "Du kan utføre biltyveri igjen!",
         "description": "Notification for gta - message"
     },
     "notification_title_blackmail": {
@@ -72,7 +72,7 @@
         "description": "Notification for blackmail - title"
     },
     "notification_message_blackmail": {
-        "message": "Du kan nå utføre utpressing!",
+        "message": "Du kan utføre utpressing igjen!",
         "description": "Notification for blackmail - message"
     }
 }
