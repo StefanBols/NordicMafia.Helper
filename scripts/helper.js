@@ -57,7 +57,11 @@ $(function() {
     }
 
     if (currentPage.includes('p=game_blackjack_sp')) {
-        runBlackjackHelper();
+        let customBJ = document.createElement('script');
+        
+        //Inject custom script
+        customBJ.src = chrome.extension.getURL('scripts/helper-blackjack.js');
+        document.head.appendChild(customBJ);
     }
 
     // If we are at the jail page and there is no bounty input (player not in jail)
@@ -156,16 +160,7 @@ $(function() {
             bountyInput.val(bounty);
             bountySubmit.click();
         });
-    }
-	if(currentPage.includes('p=game_blackjack_sp')) {
-		let customBJ = document.createElement('script');
-		
-		//Inject custom script
-		customBJ.src = chrome.extension.getURL('scripts/blackjack.js');
-		document.head.appendChild(customBJ);
-	}
-
-    
+    }   
 });
 
 var planNotification = function (type, timeOffset) {

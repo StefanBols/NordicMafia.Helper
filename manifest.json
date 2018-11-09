@@ -12,7 +12,7 @@
   },
 
   "options_page": "options/index.html",
-  "web_accessible_resources": ["options/index.html", "scripts/blackjack.js"],
+  "web_accessible_resources": ["options/index.html", "scripts/helper-blackjack.js"],
 
   "permissions": [
     "notifications",
@@ -35,8 +35,7 @@
       "js": [
         "lib/jquery-3.3.1.min.js",
         "lib/underscore-1.9.1.min.js",
-        "scripts/helper.js",
-        "scripts/helper-blackjack.js"]
+        "scripts/helper.js"]
     }
   ],
 
