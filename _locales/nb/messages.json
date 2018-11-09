@@ -24,7 +24,7 @@
         "description": "Auto Bounty option page. 'Fixed bounty' label"
     },
     "nm_fengsel_utbryt_button": {
-        "message": "Utbryt {player} ({bounty} kr.)",
+        "message": "Bryt ut {player} ({bounty} kr.)",
         "description": "Button for jailbreak inside Jail page on NM"
     },
     "nm_fengsel_update_button": {
@@ -48,7 +48,7 @@
         "description": "Notification for jail - title"
     },
     "notification_message_jail": {
-        "message": "Du er ute av fengsel!",
+        "message": "Du ble brutt ut av fengsel!",
         "description": "Notification for jail - message"
     },
     "notification_title_crime": {
