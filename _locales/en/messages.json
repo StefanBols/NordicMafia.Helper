@@ -24,7 +24,7 @@
         "description": "Auto Bounty option page. 'Fixed bounty' label"
     },
     "nm_fengsel_utbryt_button": {
-        "message": "Utbryt {player} ({bounty} kr.)",
+        "message": "Break out {player} ({bounty} kr.)",
         "description": "Button for jailbreak inside Jail page on NM"
     },
     "nm_fengsel_update_button": {
