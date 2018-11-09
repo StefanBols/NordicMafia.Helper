@@ -56,6 +56,10 @@ $(function() {
         });
     }
 
+    if (currentPage.includes('p=game_blackjack_sp')) {
+        runBlackjackHelper();
+    }
+
     // If we are at the jail page and there is no bounty input (player not in jail)
     if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
         // Player with highest bounty
