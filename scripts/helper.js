@@ -72,20 +72,8 @@ $(function() {
     }
 
     // If we are at the jail page and there is no bounty input (player not in jail)
-    if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
-        // Player with highest bounty
-        var user = getUserWithHighestBounty();
-
+    if (currentPage.includes('p=jail')) {
         var buttonContainer = $('<div>');
-        var utBrytBtn = null;
-        if (user) {
-            var utbrytBtnText = chrome.i18n.getMessage('nm_fengsel_utbryt_button').replace('{player}', user.name).replace('{bounty}', user.bounty);
-            utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text(utbrytBtnText);
-        }
-        
-        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' ' + chrome.i18n.getMessage('nm_fengsel_update_button')).prepend($('<i>').addClass('fa fa-refresh'));
-        if (utBrytBtn) buttonContainer.append(utBrytBtn);
-        buttonContainer.append(refreshBtn);
 
         chrome.storage.sync.get([
             'autoBountyActive',
@@ -122,8 +110,24 @@ $(function() {
             });
             wrapper.append(leftContainer);
             wrapper.append(buttonContainer);
-            $('#mainContent table').parent().before(wrapper);
+            $('#mainContent table').last().parent().before(wrapper);
         });
+
+        // If player jailed, don't go further
+        if ($('input[name=bounty]').length > 0) return;
+
+        // Player with highest bounty
+        var user = getUserWithHighestBounty();
+
+        var utBrytBtn = null;
+        if (user) {
+            var utbrytBtnText = chrome.i18n.getMessage('nm_fengsel_utbryt_button').replace('{player}', user.name).replace('{bounty}', user.bounty);
+            utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text(utbrytBtnText);
+        }
+        
+        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' ' + chrome.i18n.getMessage('nm_fengsel_update_button')).prepend($('<i>').addClass('fa fa-refresh'));
+        if (utBrytBtn) buttonContainer.append(utBrytBtn);
+        buttonContainer.append(refreshBtn);
     }
 
     if ($('input[name=bounty]').length > 0) { // We are in jail
