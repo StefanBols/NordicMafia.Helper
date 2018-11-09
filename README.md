@@ -14,7 +14,8 @@ See issues to get a roadmap for the future ;-)
 Feel free to add issues, both bugs and features requests!
 ## Release notes
 ### v1.4
--
+- Fixed bug in Blackjack Helper
+- New notification for fightclub battles. It will notify the player after 30 sec. See issue #49 (submitted by [Casango](https://www.nordicmafia.org/index.php?p=profile&id=15))
 ### v1.3.2
 - Added helper to Blackjack Singleplayer (thanks to [AvE](https://www.nordicmafia.org/index.php?p=profile&id=1928))
 ### v1.3.1
