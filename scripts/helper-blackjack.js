@@ -42,32 +42,7 @@ var runBlackjackHelper = () => {
             if(Blackjack.gameState.turn==="ended"){//If game is ended
                 Blackjack.btnClear();//Empty the table if in case it's not done manually by player
             }
-            else{//Function to simplify sending error messages to player
-    function errorMsg(msg){
-        $('#messageSign').html(msg);
-        $('#messageSign').fadeIn('fast', function() {
-            $('#messageSign').fadeOut('slow');
-        }).delay(1500);
-    }
-
-    function customBet(value){
-        //Send error message and return if value is not an integer
-        if(isNaN(value)||value === value && value % 1 !== 0){
-            errorMsg('Du må skrive inn et heltall!');
-            return false;
-        }
-
-        //Send error message and return if value exceeds the maxbet
-        else if(value>maxBet){
-            errorMsg('Du har kan ikke satse mer enn ' + maxBet + ' coins!');
-            return false;
-        }
-
-        //Send error message and return if value exceeds the maxbet
-        else if(value<minBet){
-            errorMsg('Du må satse minimum '+minBet+' coins!');
-            return false;
-        }
+            else{
                 errorMsg('Du må spille ferdig runden før du kan spille på nytt!');
                 return false;
             }
