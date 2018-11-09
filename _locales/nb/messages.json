@@ -1,0 +1,78 @@
+{
+    "autobounty_Title": {
+        "message": "Auto-Dusør",
+        "description": "Auto Bounty option page. Page Title"
+    },
+    "autobounty_ActiveCheckboxLabel": {
+        "message": "Aktiv",
+        "description": "Auto Bounty option page. 'Active' label for checkbox"
+    },
+    "autobounty_TopBountyWithLabel": {
+        "message": "Ønsket beløp over høyeste dusør",
+        "description": "Auto Bounty option page. 'Top bounty with' label"
+    },
+    "autobounty_MaxBountyLabel": {
+        "message": "Maks dusør-beløp",
+        "description": "Auto Bounty option page. 'Max bounty' label"
+    },
+    "autobounty_RoundBountyToNearst5kLabel": {
+        "message": "Rund av dusør til nærmeste 5k",
+        "description": "Auto Bounty option page. 'Round bounty' label checkbox"
+    },
+    "autobounty_FixedBountyLabel": {
+        "message": "Fast dusør",
+        "description": "Auto Bounty option page. 'Fixed bounty' label"
+    },
+    "nm_fengsel_utbryt_button": {
+        "message": "Utbryt {player} ({bounty} kr.)",
+        "description": "Button for jailbreak inside Jail page on NM"
+    },
+    "nm_fengsel_update_button": {
+        "message": "Oppdater",
+        "description": "Button for updating page inside Jail page on NM"
+    },
+    "nm_fengsel_autobounty_settings_button": {
+        "message": "Innstillinger",
+        "description": "Button for opening the settings page for auto bounty, button placed inside Jail page on NM"
+    },
+    "nm_fengsel_autobountystatus_active": {
+        "message": "Auto-dusør er aktiv",
+        "description": "Auto bounty active status, inside Jail page on NM"
+    },
+    "nm_fengsel_autobountystatus_inactive": {
+        "message": "Auto-dusør er inaktiv",
+        "description": "Auto bounty not active status, inside Jail page on NM"
+    },
+    "notification_title_jail": {
+        "message": "Ut av fengsel!",
+        "description": "Notification for jail - title"
+    },
+    "notification_message_jail": {
+        "message": "Du er ute av fengsel!",
+        "description": "Notification for jail - message"
+    },
+    "notification_title_crime": {
+        "message": "Kriminalitet - Klar!",
+        "description": "Notification for crime - title"
+    },
+    "notification_message_crime": {
+        "message": "Du kan utføre kriminalitet igjen!",
+        "description": "Notification for crime - message"
+    },
+    "notification_title_gta": {
+        "message": "Biltyveri - Klar!",
+        "description": "Notification for gta - title"
+    },
+    "notification_message_gta": {
+        "message": "Du kan utføre biltyveri igjen!",
+        "description": "Notification for gta - message"
+    },
+    "notification_title_blackmail": {
+        "message": "Utpressing - Klar",
+        "description": "Notification for blackmail - title"
+    },
+    "notification_message_blackmail": {
+        "message": "Du kan utføre utpressing igjen!",
+        "description": "Notification for blackmail - message"
+    }
+}

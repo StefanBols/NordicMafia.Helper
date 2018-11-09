@@ -17,16 +17,19 @@ chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
 });
 
 chrome.alarms.onAlarm.addListener(function( alarm ) {
-    console.log("Got an alarm!", alarm);
     var type = alarm.name;
 
     if (jailCheckers.includes(alarm.name)) {
         $.get('https://nordicmafia.org/index.php?p=jail', (response) => {
             if (!response.includes('Du er i fengsel!')) {
                 console.log('Player free, send jail free notification');
-                clearJailCheckers();
-                chrome.alarms.clear('jail');
-                sendNotification('jailchecker', 'Fengsels utbrytning', 'Du er heldig! Du er blevet brut ut av fengslet!');
+                // Check chail
+                chrome.alarms.get('jail', (alarm) => {
+                    clearJailCheckers();
+                    if (!alarm) return; // If there is no jail, no need for clearing jail or send notification
+                    chrome.alarms.clear('jail');
+                    sendNotification('jailchecker', chrome.i18n.getMessage('notification_title_jail'), chrome.i18n.getMessage('notification_message_jail'));
+                });
             }
         });
         return;
@@ -38,22 +41,24 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
     
     switch(type) {
         case 'krim':
-            title = 'Kriminalitet - Klar!';
-            message = 'Det er nu muligt at prøve kriminalitet igen';
+            title = chrome.i18n.getMessage('notification_title_crime');
+            message = chrome.i18n.getMessage('notification_message_crime');
             break;
         case 'gta':
-            title = 'Biltyveri - Klar!';
-            message = 'Det er nu muligt at prøve biltyveri igen';
+            title = chrome.i18n.getMessage('notification_title_gta');
+            message = chrome.i18n.getMessage('notification_message_gta');
             break;
         case 'blackmail':
-            title = 'Utpresning - Klar!';
-            message = 'Det er nu muligt at prøve utpresning igen';
+            title = chrome.i18n.getMessage('notification_title_blackmail');
+            message = chrome.i18n.getMessage('notification_message_blackmail');
             break;
         case 'jail':
-            title = 'Fengsel';
-            message = 'Du er nu ude af fengslet';
+            title = chrome.i18n.getMessage('notification_title_jail');
+            message = chrome.i18n.getMessage('notification_message_jail');
             break;
     }
+
+    if (type === 'jail') clearJailCheckers();
 
     // Send notification!
     if (title && message) sendNotification(type, title, message);
@@ -100,13 +105,13 @@ var planJailChecker = () => {
     clearJailCheckers();
 
     var time = Date.now();
-    jailCheckers.forEach((jailChecker) => {
-        chrome.alarms.create(jailChecker, {
+    for (var i = 0; i < jailCheckers.length; i++) {
+        chrome.alarms.create(jailCheckers[i], {
             when: time,
             periodInMinutes: 1
         });
         time += 60000 / jailCheckers.length;
-    });
+    }
 }
 var clearJailCheckers = () => {
     console.log('Clear Jail Checkers');

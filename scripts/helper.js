@@ -63,9 +63,12 @@ $(function() {
 
         var buttonContainer = $('<div>');
         var utBrytBtn = null;
-        if (user) utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text('Ut bryt ' + user.name + ' (' + user.bounty + ' kr.)');
+        if (user) {
+            var utbrytBtnText = chrome.i18n.getMessage('nm_fengsel_utbryt_button').replace('{player}', user.name).replace('{bounty}', user.bounty);
+            utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text(utbrytBtnText);
+        }
         
-        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Opdater').prepend($('<i>').addClass('fa fa-refresh'));
+        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' ' + chrome.i18n.getMessage('nm_fengsel_update_button')).prepend($('<i>').addClass('fa fa-refresh'));
         if (utBrytBtn) buttonContainer.append(utBrytBtn);
         buttonContainer.append(refreshBtn);
 
@@ -81,16 +84,19 @@ $(function() {
 
             var autoBountyStatusText, autoBountyStatusColor;
             if (autoBountyStatus) {
-                autoBountyStatusText = 'aktiv';
+                autoBountyStatusText = chrome.i18n.getMessage('nm_fengsel_autobountystatus_active');
                 autoBountyStatusColor = 'green';
             } else {
-                autoBountyStatusText = 'ikke aktiv';
+                autoBountyStatusText = chrome.i18n.getMessage('nm_fengsel_autobountystatus_inactive');
                 autoBountyStatusColor = 'red';
             }
 
             var leftContainer = $('<div>');
-            var autoBountyStatusBtn = $('<button>').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
-            var autoBountyOptionsBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' Indstillinger').prepend($('<i>').addClass('fa fa-pencil'));
+            var autoBountyStatusBtn = $('<div>').css({
+                'margin-right': '1em',
+                'display': 'inline-block'
+            }).text(' ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            var autoBountyOptionsBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' '+chrome.i18n.getMessage('nm_fengsel_autobounty_settings_button')).prepend($('<i>').addClass('fa fa-pencil'));
             leftContainer.append(autoBountyStatusBtn);
             leftContainer.append(autoBountyOptionsBtn);
 
@@ -189,9 +195,16 @@ var getUserWithHighestBounty = () => {
                 var id = row.attr('id').replace(/\D/g,'');
                 var name = columns[0].innerText;
                 var bounty = parseInt(columns[2].innerText.replace(/\D/g,''));
-                users.push({id: id, bounty: bounty, name: name});
+                var gjengBro = columns[0].innerHTML.includes('#E3BB07');
+                users.push({id, bounty, name, gjengBro});
             }
         }
+
+        // Find Bros in jail
+        var jailedBros = _.where(users, { gjengBro: true });
+
+        // If any Bros jailed - fav. them and only them!
+        if (_.any(jailedBros)) users = jailedBros;
 
         // Sort users by biggest bounty
         users.sort(function(a, b){
