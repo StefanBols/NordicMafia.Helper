@@ -153,6 +153,13 @@ $(function() {
             bountySubmit.click();
         });
     }
+	if(currentPage.includes('p=game_blackjack_sp')) {
+		let customBJ = document.createElement('script');
+		
+		//Inject custom script
+		customBJ.src = chrome.extension.getURL('scripts/blackjack.js');
+		document.head.appendChild(customBJ);
+	}
 
     
 });
