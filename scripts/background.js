@@ -29,6 +29,9 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
                     if (!alarm) return; // If there is no jail, no need for clearing jail or send notification
                     chrome.alarms.clear('jail');
                     sendNotification('jailchecker', chrome.i18n.getMessage('notification_title_jail'), chrome.i18n.getMessage('notification_message_jail'));
+                    sendMessageToHelper({
+                        action: 'reloadjail'
+                    });
                 });
             }
         });
@@ -140,6 +143,10 @@ var sendNotification = function(type, title, message) {
             if (notificationId) chrome.notifications.clear(notificationId);
          }, 30000, notificationId);
      });
+}
+
+var sendMessageToHelper = (obj) => {
+    chrome.runtime.sendMessage(obj);
 }
 
 

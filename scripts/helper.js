@@ -235,3 +235,15 @@ var autoBountyMapping = (settings) => {
         roundBountiesUp: settings.autoBountyRoundBountiesUp
     };
 }
+
+chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
+    // If no action is set, don't go to actions methods
+    if (!msg.action) return;
+
+    // Action methods
+    if (msg.action === 'reload') {
+        if (window.location.href.includes('p=jail')) {
+            window.location.href = '';
+        }
+    }
+});
