@@ -13,6 +13,8 @@ See issues to get a roadmap for the future ;-)
 
 Feel free to add issues, both bugs and features requests!
 ## Release notes
+### v1.3.1
+- Made changes to a translation for better understanding
 ### v1.3
 - Norwegian translations (thanks to [Endtime](https://www.nordicmafia.org/index.php?p=profile&id=95))
 - New feature: In jail the bounty button that serves the player with highest reward now favorites fellow gjengmembers regardless of other players rewards.
