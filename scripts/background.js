@@ -29,6 +29,9 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
                     if (!alarm) return; // If there is no jail, no need for clearing jail or send notification
                     chrome.alarms.clear('jail');
                     sendNotification('jailchecker', chrome.i18n.getMessage('notification_title_jail'), chrome.i18n.getMessage('notification_message_jail'));
+                    sendMessageToHelper({
+                        action: 'reloadjail'
+                    });
                 });
             }
         });
@@ -55,6 +58,10 @@ chrome.alarms.onAlarm.addListener(function( alarm ) {
         case 'jail':
             title = chrome.i18n.getMessage('notification_title_jail');
             message = chrome.i18n.getMessage('notification_message_jail');
+            break;
+        case 'fcfight':
+            title = chrome.i18n.getMessage('notification_title_fcfight');
+            message = chrome.i18n.getMessage('notification_message_fcfight');
             break;
     }
 
@@ -90,9 +97,12 @@ var planNotification = function(type, timeOffset) {
             // timeOffset comes from parameter
             planJailChecker();
             break;
+        case 'fcfight':
+            timeOffset = 30;
+            break;
     }
 
-    chrome.alarms.clear(type); // If alarm already excists, remove it
+    chrome.alarms.clear(type);
     chrome.alarms.create(type, {
         when: Date.now() + timeOffset*1000
     });
@@ -112,7 +122,9 @@ var planJailChecker = () => {
         });
         time += 60000 / jailCheckers.length;
     }
+    console.log('Jail Checkers planed');
 }
+
 var clearJailCheckers = () => {
     console.log('Clear Jail Checkers');
     jailCheckers.forEach((jailChecker) => {
@@ -133,6 +145,14 @@ var sendNotification = function(type, title, message) {
             if (notificationId) chrome.notifications.clear(notificationId);
          }, 30000, notificationId);
      });
+}
+
+var sendMessageToHelper = (message) => {
+    chrome.tabs.query({url:'https://www.nordicmafia.org/*'}, function(tabs) {
+        for (var i=0; i<tabs.length; ++i) {
+            chrome.tabs.sendMessage(tabs[i].id, message);
+        }
+    });
 }
 
 

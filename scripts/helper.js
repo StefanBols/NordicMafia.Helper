@@ -31,6 +31,8 @@
 $(function() {
     var currentPage = window.location.href;
 
+    jailBackgroundChecker();
+
     if (currentPage.includes('p=kriminalitet')) {
         $('#krimSubmitButton').click(function() {
             planNotification('krim');
@@ -64,21 +66,16 @@ $(function() {
         document.head.appendChild(customBJ);
     }
 
-    // If we are at the jail page and there is no bounty input (player not in jail)
-    if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
-        // Player with highest bounty
-        var user = getUserWithHighestBounty();
-
-        var buttonContainer = $('<div>');
-        var utBrytBtn = null;
-        if (user) {
-            var utbrytBtnText = chrome.i18n.getMessage('nm_fengsel_utbryt_button').replace('{player}', user.name).replace('{bounty}', user.bounty);
-            utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text(utbrytBtnText);
+    if (currentPage.includes('p=fightclub')) {
+        var errBoxTxt = $('.errorBox').text();
+        if (errBoxTxt.includes('Du vant') || errBoxTxt.includes('Du tapte')) {
+            planNotification('fcfight');
         }
-        
-        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' ' + chrome.i18n.getMessage('nm_fengsel_update_button')).prepend($('<i>').addClass('fa fa-refresh'));
-        if (utBrytBtn) buttonContainer.append(utBrytBtn);
-        buttonContainer.append(refreshBtn);
+    }
+
+    // If we are at the jail page and there is no bounty input (player not in jail)
+    if (currentPage.includes('p=jail')) {
+        var buttonContainer = $('<div>');
 
         chrome.storage.sync.get([
             'autoBountyActive',
@@ -115,17 +112,32 @@ $(function() {
             });
             wrapper.append(leftContainer);
             wrapper.append(buttonContainer);
-            $('#mainContent table').parent().before(wrapper);
+            $('#mainContent table').last().parent().before(wrapper);
         });
+
+        // If player jailed, don't go further
+        if ($('input[name=bounty]').length === 0) {
+            // Player with highest bounty
+            var user = getUserWithHighestBounty();
+
+            var utBrytBtn = null;
+            if (user) {
+                var utbrytBtnText = chrome.i18n.getMessage('nm_fengsel_utbryt_button').replace('{player}', user.name).replace('{bounty}', user.bounty);
+                utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text(utbrytBtnText);
+            }
+            
+            var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' ' + chrome.i18n.getMessage('nm_fengsel_update_button')).prepend($('<i>').addClass('fa fa-refresh'));
+            if (utBrytBtn) buttonContainer.append(utBrytBtn);
+            buttonContainer.append(refreshBtn);
+        }
     }
 
-    if ($('input[name=bounty]').length > 0) { // We are in jail
-        // planNotification for release
-        var jailCountdown = checkJailCountdown();
-        if (jailCountdown) {
-            planNotification('jail', jailCountdown);
-        }
+    var jailCountdown = checkJailCountdown();
+    if (jailCountdown) {
+        planNotification('jail', jailCountdown);
+    }
 
+    if ($('input[name=bounty]').length > 0) {
         chrome.storage.sync.get([
             'autoBountyActive',
             'autoBountyFixedBounty',
@@ -164,7 +176,7 @@ $(function() {
 });
 
 var planNotification = function (type, timeOffset) {
-    console.log('ContentScript plan notification for', type)
+    console.log('ContentScript plan notification for', type);
     chrome.runtime.sendMessage({
         action: 'planNotification',
         payload: {
@@ -219,6 +231,29 @@ var getUserWithHighestBounty = () => {
         return users[0];
 }
 
+var jailBackgroundInterval;
+var jailBackgroundChecker = () => {
+    console.log('jailBackgroundChecker');
+    var $jailCounter = $('#premCounter_jail');
+
+    if ($jailCounter.length) {
+        if ($jailCounter.text() !== '0') {
+            if (!jailBackgroundInterval) startJailBackgroundChecker();
+        } else {
+            stopJailBackgroundChecker();
+        }
+    }
+}
+
+var startJailBackgroundChecker = () => {
+    $('body').addClass('jail');
+    jailBackgroundInterval = setInterval(jailBackgroundChecker, 1000);
+}
+var stopJailBackgroundChecker = () => {
+    $('body').removeClass('jail');
+    clearInterval(jailBackgroundInterval);
+}
+
 var autoBountyMapping = (settings) => {
     return {
         active: settings.autoBountyActive,
@@ -228,3 +263,22 @@ var autoBountyMapping = (settings) => {
         roundBountiesUp: settings.autoBountyRoundBountiesUp
     };
 }
+
+chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
+    // If no action is set, don't go to actions methods
+    if (!msg.action) return;
+
+    // Action methods
+    if (msg.action === 'reloadjail') {
+        var $jailCounter = $('#premCounter_jail');
+        if ($jailCounter.length) {
+            $jailCounter.text('0');
+            jailBackgroundChecker();
+        }
+
+
+        if (window.location.href.includes('p=jail')) {
+            window.location.href = '';
+        }
+    }
+});

@@ -2,7 +2,11 @@ $(function() {
     $('<style>.customBet:focus {outline: none;}.customBet {line-height: 40px;text-align: center;font-size: 14px;background:none;border: none;}</style>').insertAfter($('head'));
     $('#PageContainer').css('height', '550px');
     
-    var $bjInput = $('<input>').addClass('customBet').prop({'placeholder': 'Innsats...'});
+    var $bjInput = $('<input>').addClass('customBet').prop({'placeholder': 'Innsats...'}).on("keydown", function(event){
+        if(event.keyCode === 13){
+            customBet($(this).val());
+        }
+    });
     $('<div>').addClass('btn').css({'left': '85px', 'top': '50px'}).append($bjInput).appendTo('#bottomContainer');
     $('<div>').addClass('btn').css({'right': '85px', 'top': '50px'}).html('Sats coins').on('click', () => { customBet($bjInput.val()) }).appendTo('#bottomContainer');
     $('<div>').css({'font-variant': 'small-caps', 'position': 'absolute', 'bottom': '-65px', 'text-align': 'center', 'width': '100%', 'opacity': '.25'}).html('Utvidelse av blackjack laget av <a href="https://www.nordicmafia.org/index.php?p=profile&id=1928">AvE</a>').appendTo('#bottomContainer');
@@ -60,10 +64,3 @@ function customBet(value){
     Blackjack._showBet();
     Blackjack.btnDeal();
 }
- 
-//Lets the player bet by pressing 'enter' inside the text-field
-$('#customBet')[0].addEventListener("keydown", function(event){
-    if(event.keyCode === 13){
-        customBet($(this).val());
-    }
-});
