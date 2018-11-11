@@ -1,12 +1,12 @@
 {
   "manifest_version": 2,
   "name": "NordicMafia Helper",
-  "default_locale": "nb",
+  "default_locale": "en",
   "short_name": "NM Helper",
   "description": "Get desktop notification in-game. This is a helper for the Nordic Mafia browser game. It's NOT a bot nor an official extension!",
   "homepage_url": "https://github.com/StefanBols/NordicMafia.Helper",
   "author": "Stefan Bols (in-game: bols)",
-  "version": "1.4",
+  "version": "1.4.4",
   "browser_action": {
     "default_title": "NM Helper"
   },
