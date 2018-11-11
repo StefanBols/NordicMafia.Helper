@@ -122,7 +122,9 @@ var planJailChecker = () => {
         });
         time += 60000 / jailCheckers.length;
     }
+    console.log('Jail Checkers planed');
 }
+
 var clearJailCheckers = () => {
     console.log('Clear Jail Checkers');
     jailCheckers.forEach((jailChecker) => {
@@ -145,8 +147,12 @@ var sendNotification = function(type, title, message) {
      });
 }
 
-var sendMessageToHelper = (obj) => {
-    chrome.runtime.sendMessage(obj);
+var sendMessageToHelper = (message) => {
+    chrome.tabs.query({url:'https://www.nordicmafia.org/*'}, function(tabs) {
+        for (var i=0; i<tabs.length; ++i) {
+            chrome.tabs.sendMessage(tabs[i].id, message);
+        }
+    });
 }
 
 

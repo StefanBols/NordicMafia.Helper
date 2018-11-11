@@ -17,6 +17,7 @@ Feel free to add issues, both bugs and features requests!
 - New notification for fightclub battles. It will notify the player after 30 sec. See issue #49 (submitted by [Casango](https://www.nordicmafia.org/index.php?p=profile&id=15))
 - New feature: The helper now auto refresh jail page when player is broken out of jail. See issue #25
 - New feature: It's now possible to see status on Auto Dusør and go to settings while in jail. See issue #50
+- New feature (needs premium timers): A custom background on all pages will show when the player is in jail and will be removed when the player is out jail, either because timer runs out or another player breaks the player out. 
 - Fixed bug in Blackjack Helper
 - Fixed an english translation which were norwegian
 ### v1.3.2
