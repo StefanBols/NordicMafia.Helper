@@ -31,6 +31,8 @@
 $(function() {
     var currentPage = window.location.href;
 
+    jailBackgroundChecker();
+
     if (currentPage.includes('p=kriminalitet')) {
         $('#krimSubmitButton').click(function() {
             planNotification('krim');
@@ -56,18 +58,24 @@ $(function() {
         });
     }
 
-    // If we are at the jail page and there is no bounty input (player not in jail)
-    if (currentPage.includes('p=jail') && $('input[name=bounty]').length === 0) {
-        // Player with highest bounty
-        var user = getUserWithHighestBounty();
-
-        var buttonContainer = $('<div>');
-        var utBrytBtn = null;
-        if (user) utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text('Ut bryt ' + user.name + ' (' + user.bounty + ' kr.)');
+    if (currentPage.includes('p=game_blackjack_sp')) {
+        let customBJ = document.createElement('script');
         
-        var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' Opdater').prepend($('<i>').addClass('fa fa-refresh'));
-        if (utBrytBtn) buttonContainer.append(utBrytBtn);
-        buttonContainer.append(refreshBtn);
+        //Inject custom script
+        customBJ.src = chrome.extension.getURL('scripts/helper-blackjack.js');
+        document.head.appendChild(customBJ);
+    }
+
+    if (currentPage.includes('p=fightclub')) {
+        var errBoxTxt = $('.errorBox').text();
+        if (errBoxTxt.includes('Du vant') || errBoxTxt.includes('Du tapte')) {
+            planNotification('fcfight');
+        }
+    }
+
+    // If we are at the jail page and there is no bounty input (player not in jail)
+    if (currentPage.includes('p=jail')) {
+        var buttonContainer = $('<div>');
 
         chrome.storage.sync.get([
             'autoBountyActive',
@@ -81,16 +89,19 @@ $(function() {
 
             var autoBountyStatusText, autoBountyStatusColor;
             if (autoBountyStatus) {
-                autoBountyStatusText = 'aktiv';
+                autoBountyStatusText = chrome.i18n.getMessage('nm_fengsel_autobountystatus_active');
                 autoBountyStatusColor = 'green';
             } else {
-                autoBountyStatusText = 'ikke aktiv';
+                autoBountyStatusText = chrome.i18n.getMessage('nm_fengsel_autobountystatus_inactive');
                 autoBountyStatusColor = 'red';
             }
 
             var leftContainer = $('<div>');
-            var autoBountyStatusBtn = $('<button>').text(' Auto Dusør ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
-            var autoBountyOptionsBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' Indstillinger').prepend($('<i>').addClass('fa fa-pencil'));
+            var autoBountyStatusBtn = $('<div>').css({
+                'margin-right': '1em',
+                'display': 'inline-block'
+            }).text(' ' + autoBountyStatusText).prepend($('<i>').addClass('fa fa-circle').css('color', autoBountyStatusColor));
+            var autoBountyOptionsBtn = $('<button>').attr('onclick', 'window.open(\'' + chrome.runtime.getURL('options/index.html') + '\', \'_blank\')').text(' '+chrome.i18n.getMessage('nm_fengsel_autobounty_settings_button')).prepend($('<i>').addClass('fa fa-pencil'));
             leftContainer.append(autoBountyStatusBtn);
             leftContainer.append(autoBountyOptionsBtn);
 
@@ -101,17 +112,32 @@ $(function() {
             });
             wrapper.append(leftContainer);
             wrapper.append(buttonContainer);
-            $('#mainContent table').parent().before(wrapper);
+            $('#mainContent table').last().parent().before(wrapper);
         });
+
+        // If player jailed, don't go further
+        if ($('input[name=bounty]').length === 0) {
+            // Player with highest bounty
+            var user = getUserWithHighestBounty();
+
+            var utBrytBtn = null;
+            if (user) {
+                var utbrytBtnText = chrome.i18n.getMessage('nm_fengsel_utbryt_button').replace('{player}', user.name).replace('{bounty}', user.bounty);
+                utBrytBtn = $('<button>').attr('onclick', 'window.location.href=\'?p=jail&brytutspiller='+ user.id +'\'').attr('type', 'button').text(utbrytBtnText);
+            }
+            
+            var refreshBtn = $('<button>').attr('onclick', 'window.location.href=\'\'').text(' ' + chrome.i18n.getMessage('nm_fengsel_update_button')).prepend($('<i>').addClass('fa fa-refresh'));
+            if (utBrytBtn) buttonContainer.append(utBrytBtn);
+            buttonContainer.append(refreshBtn);
+        }
     }
 
-    if ($('input[name=bounty]').length > 0) { // We are in jail
-        // planNotification for release
-        var jailCountdown = checkJailCountdown();
-        if (jailCountdown) {
-            planNotification('jail', jailCountdown);
-        }
+    var jailCountdown = checkJailCountdown();
+    if (jailCountdown) {
+        planNotification('jail', jailCountdown);
+    }
 
+    if ($('input[name=bounty]').length > 0) {
         chrome.storage.sync.get([
             'autoBountyActive',
             'autoBountyFixedBounty',
@@ -146,13 +172,11 @@ $(function() {
             bountyInput.val(bounty);
             bountySubmit.click();
         });
-    }
-
-    
+    }   
 });
 
 var planNotification = function (type, timeOffset) {
-    console.log('ContentScript plan notification for', type)
+    console.log('ContentScript plan notification for', type);
     chrome.runtime.sendMessage({
         action: 'planNotification',
         payload: {
@@ -189,15 +213,45 @@ var getUserWithHighestBounty = () => {
                 var id = row.attr('id').replace(/\D/g,'');
                 var name = columns[0].innerText;
                 var bounty = parseInt(columns[2].innerText.replace(/\D/g,''));
-                users.push({id: id, bounty: bounty, name: name});
+                var gjengBro = columns[0].innerHTML.includes('#E3BB07');
+                users.push({id, bounty, name, gjengBro});
             }
         }
+
+        // Find Bros in jail
+        var jailedBros = _.where(users, { gjengBro: true });
+
+        // If any Bros jailed - fav. them and only them!
+        if (_.any(jailedBros)) users = jailedBros;
 
         // Sort users by biggest bounty
         users.sort(function(a, b){
             return b.bounty - a.bounty;
         });
         return users[0];
+}
+
+var jailBackgroundInterval;
+var jailBackgroundChecker = () => {
+    console.log('jailBackgroundChecker');
+    var $jailCounter = $('#premCounter_jail');
+
+    if ($jailCounter.length) {
+        if ($jailCounter.text() !== '0') {
+            if (!jailBackgroundInterval) startJailBackgroundChecker();
+        } else {
+            stopJailBackgroundChecker();
+        }
+    }
+}
+
+var startJailBackgroundChecker = () => {
+    $('body').addClass('jail');
+    jailBackgroundInterval = setInterval(jailBackgroundChecker, 1000);
+}
+var stopJailBackgroundChecker = () => {
+    $('body').removeClass('jail');
+    clearInterval(jailBackgroundInterval);
 }
 
 var autoBountyMapping = (settings) => {
@@ -209,3 +263,22 @@ var autoBountyMapping = (settings) => {
         roundBountiesUp: settings.autoBountyRoundBountiesUp
     };
 }
+
+chrome.runtime.onMessage.addListener(function(msg, sender, callback) {
+    // If no action is set, don't go to actions methods
+    if (!msg.action) return;
+
+    // Action methods
+    if (msg.action === 'reloadjail') {
+        var $jailCounter = $('#premCounter_jail');
+        if ($jailCounter.length) {
+            $jailCounter.text('0');
+            jailBackgroundChecker();
+        }
+
+
+        if (window.location.href.includes('p=jail')) {
+            window.location.href = '';
+        }
+    }
+});
